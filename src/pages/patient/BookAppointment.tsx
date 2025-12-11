@@ -74,7 +74,11 @@ const BookAppointment: React.FC = () => {
             // Maybe go back to dashboard or clear selection
             setSlots(prev => prev.filter(s => s._id !== slotId)); // Optimistic update
         } catch (error: any) {
-            toast.error(error.response?.data?.error || 'Booking Failed');
+            if (error.response?.status === 409) {
+                toast.error("This slot has just been booked. Please choose another slot.");
+            } else {
+                toast.error("Booking failed. Please try again.");
+            }
         }
     };
 
